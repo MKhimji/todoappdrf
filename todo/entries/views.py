@@ -1,6 +1,3 @@
-from django.shortcuts import render
-
-# Create your views here.
 from entries.models import Entry
 from entries.serializers import EntrySerializer
 from rest_framework import generics
