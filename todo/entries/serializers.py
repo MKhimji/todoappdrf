@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from entries.models import Entry
+from django.contrib.auth.models import User
 class EntrySerializer(serializers.ModelSerializer):
     # Despite foriegnkey on Entry model to User model
     # When you go to /entries/ that gives you the list
@@ -11,7 +12,6 @@ class EntrySerializer(serializers.ModelSerializer):
         model = Entry
         fields = ['date_posted', 'title', 'body', 'author']
 
-from django.contrib.auth.models import User
 
 class UserSerializer(serializers.ModelSerializer):
     # forward relationship is from Entry to User
