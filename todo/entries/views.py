@@ -52,10 +52,10 @@ def api_root(request, format=None):
     })
 
 
-class EntryHTML(generics.GenericAPIView):
-    queryset = Entry.objects.all()
-    renderer_classes = [renderers.StaticHTMLRenderer]
+# class EntryHTML(generics.GenericAPIView):
+#     queryset = Entry.objects.all()
+#     renderer_classes = [renderers.StaticHTMLRenderer]
 
-    def get(self, request, *args, **kwargs):
-        entry = self.get_object()
-        return Response(entry.formatter)
+#     def get(self, request, *args, **kwargs):
+#         entry = self.get_object()
+#         return Response(entry.formatter)

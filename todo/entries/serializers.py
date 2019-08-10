@@ -16,8 +16,9 @@ class EntrySerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     # forward relationship is from Entry to User
     # reverse from User to Entry
-    entries = serializers.PrimaryKeyRelatedField(many=True, queryset=Entry.objects.all())
-
+    # entries = serializers.PrimaryKeyRelatedField(many=True, queryset=Entry.objects.all())
+    # entries = serializers.StringRelatedField(many=True)
+    entries = serializers.HyperlinkedRelatedField(many=True, view_name='entries-detail', read_only=True)
     class Meta:
         model = User
-        fields = ['id', 'username', 'entries']
+        fields = ['url', 'id', 'username', 'entries']
