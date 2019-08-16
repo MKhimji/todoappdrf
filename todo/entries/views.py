@@ -10,6 +10,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework import renderers
+from rest_framework import viewsets
+from rest_framework.decorators import action
 #EntryList allows you to post a new Entry
 #EntryDetail allows you to update an exisiting Entry
 #To prevent any logged in user from editing an existing
@@ -17,32 +19,51 @@ from rest_framework import renderers
 #So we only need to use the IsOwnerOrReadOnly
 #permission on the EntryDetail
 
-class EntryList(generics.ListCreateAPIView):
-    queryset = Entry.objects.all()
-    serializer_class = EntrySerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
+# class EntryList(generics.ListCreateAPIView):
+#     queryset = Entry.objects.all()
+#     serializer_class = EntrySerializer
+#     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+#     def perform_create(self, serializer):
+#         serializer.save(author=self.request.user)
 
 
+# class EntryDetail(generics.RetrieveUpdateDestroyAPIView):
+#     queryset = Entry.objects.all()
+#     serializer_class = EntrySerializer
+#     permission_classes = [permissions.IsAuthenticatedOrReadOnly,
+#     IsOwnerOrReadOnly]
 
+class EntryViewSet(viewsets.ModelViewSet):
+    """
+    This viewset automatically provides `list`, `create`, `retrieve`,
+    `update` and `destroy` actions.
 
-class EntryDetail(generics.RetrieveUpdateDestroyAPIView):
+    """
     queryset = Entry.objects.all()
     serializer_class = EntrySerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly,
-    IsOwnerOrReadOnly]
+                          IsOwnerOrReadOnly]
+
+    @action(detail=True)
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
+
+# class UserList(generics.ListAPIView):
+#     queryset = User.objects.all()
+#     serializer_class = UserSerializer
+
+# class UserDetail(generics.RetrieveAPIView):
+#     queryset = User.objects.all()
+#     serializer_class = UserSerializer
 
 
-
-class UserList(generics.ListAPIView):
+class UserViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    This viewset automatically provides `list` and `detail` actions.
+    """
     queryset = User.objects.all()
     serializer_class = UserSerializer
-
-class UserDetail(generics.RetrieveAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-
 
 @api_view(['GET'])
 def api_root(request, format=None):
